@@ -28,17 +28,23 @@ body {
     border: 2px solid black;
     align-self: center;
     margin-top: 2%;
+    display: flex;
+    flex-direction: column;
 }
 
 .statement {
     width: 100%;
     height: 50%;
+    display: flex;
+    align-items: center;
 }
 
 .answer {
     width: 100%;
     height: 50%;
-    border-top: 1px solid grey;
+    display: flex;
+    align-items: center;
+    justify-content: end;
 }
 
 .input {
