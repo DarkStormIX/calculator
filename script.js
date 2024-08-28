@@ -41,6 +41,7 @@ clearButton.textContent = "CLEAR";
 clearButton.addEventListener("click", (e) => {
     statement.textContent = "";
     answer.textContent = "";
+    answerText = undefined;
 });
 
 
@@ -65,6 +66,7 @@ var fullStatement;
 var firstNumber;
 var secondNumber;
 var operator;
+var answerText = undefined;
 
 function operate(firstNumber, secondNumber, operator){
     if(operator == "+")
@@ -94,13 +96,15 @@ function clickEquals(element){
     element.addEventListener("click", (e) => {
         fullStatement = statement.textContent;
         const array = fullStatement.split("");
-        countOperator(array);
-        splitNumber(array);
-        console.log(operator);
-        var answerText = operate(firstNumber,secondNumber,operator);
+        var operatorCounter = countOperator(array);
+        for(let i = 0; i<operatorCounter; i++){
+            regulateNumber(array);
+            answerText = operate(firstNumber,secondNumber,operator);
+        }
         answer.textContent = answerText;
     });
 }
+
 
 function countOperator(array){
     var operatorCounter = 0;
@@ -115,13 +119,34 @@ function countOperator(array){
 }
 
 function splitNumber(array){
-    var operatorIndex = array.findIndex(element => {
-        return element == "+" ||
-        element == "-" ||
-        element == "x" ||
-        element == "/";
-    });
-    firstNumber = Number(array.splice(0, operatorIndex).join(""));
-    operator = array.shift();
-    secondNumber = Number(array.join(""));
+    var operatorIndex = array.findIndex(checkOperator);
+    if(operatorIndex != -1){
+        subNumber = Number(array.splice(0, operatorIndex).join(""));
+        return subNumber;
+    }
+    else{
+        return Number(array.join(""));
+    }
+}
+
+function checkOperator(string){
+    for(let i = 0; i<4; i++){
+        if(string == operatorArray[i]){
+            return true;
+        }
+    }
+    return false;
+}
+
+function regulateNumber(array){
+    if(answerText == undefined){
+        firstNumber = splitNumber(array);
+        operator = array.shift();
+        secondNumber = splitNumber(array);
+    }
+    else{
+        firstNumber = answerText;
+        operator = array.shift();
+        secondNumber = splitNumber(array);
+    }
 }
